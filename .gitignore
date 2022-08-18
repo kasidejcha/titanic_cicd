@@ -6,8 +6,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-.vscode/
+.vscode
 .mypy_cache/
 .tox/
 .__pycache__/
 .pytest_cache/
+.DS_Store/
