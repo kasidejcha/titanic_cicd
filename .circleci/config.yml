@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/python:3.9.4
+    - image: circleci/python:3.9.5
   working_directory: ~/project
 
 prepare_venv: &prepare_venv
@@ -68,4 +68,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
