@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 defaults: &defaults
   docker:
@@ -58,7 +58,7 @@ jobs:
             tox -e test
             
 workflows:
-  version: 1
+  version: 2
   titanic:
     jobs:
       - test_classification_model
