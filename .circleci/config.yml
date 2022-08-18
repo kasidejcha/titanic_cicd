@@ -64,7 +64,7 @@ workflows:
       - test_classification_model
       - deploy_app_container_in_heroku:
           requires:
-            - section_07_test_app
+            - test_classification_model
           filters:
             branches:
               only:
