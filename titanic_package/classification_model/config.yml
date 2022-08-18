@@ -1,0 +1,48 @@
+# Package overview
+package_name: classification_model
+
+# Data files
+data: titanic_train_data.csv
+test_data: titanic_test_data.csv
+
+# Variables
+target: survived
+
+pipeline_name: classification_model
+pipeline_save_file: classification_model_output
+
+features:
+  - age
+  - fare
+  - sex
+  - cabin
+  - embarked
+  - title
+
+test_size: 0.2
+
+random_state: 0
+
+c: 0.0005
+
+categorical_vars:
+  - sex
+  - cabin
+  - embarked
+  - title
+
+numerical_vars:
+  - age
+  - fare
+
+cabin_vars: cabin
+
+drop_vars:
+  - name
+  - ticket
+  - boat
+  - body
+  - home.dest
+
+name_vars:
+  - name

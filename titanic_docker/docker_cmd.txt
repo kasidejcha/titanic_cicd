@@ -1,0 +1,3 @@
+Local run:
+docker build -t titanic_api:latest .
+docker run -p 8001:8001 -e PORT=8001 titanic_api

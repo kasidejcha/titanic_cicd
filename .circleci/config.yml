@@ -1,0 +1,71 @@
+version: 1
+
+defaults: &defaults
+  docker:
+    - image: circleci/python:3.9.5
+  working_directory: ~/project
+
+prepare_venv: &prepare_venv
+  run:
+    name: Create venv
+    command: |
+      python3 -m venv venv
+      source venv/bin/activate
+      pip install --upgrade pip
+
+prepare_tox: &prepare_tox
+  run:
+    name: Install tox
+    command: |
+      sudo pip install --upgrade pip
+      pip install --user tox
+
+jobs:
+  deploy_app_container_in_heroku:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          # Supported versions: https://circleci.com/docs/2.0/building-docker-images/#docker-version
+          version: 20.10.6
+      - checkout:
+          path: ~/project
+      - run:
+          name: Build image
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            cd titanic_docker && make build-ml-api-heroku
+      - run:
+          name: Push Image to Heroku
+          command: |
+            # Push the built container to the Heroku image registry
+            cd titanic_docker && make push-ml-api-heroku
+      - run:
+          name: Release to Heroku
+          command: |
+            cd titanic_docker && make release-heroku
+  
+  test_classification_model:
+    <<: *defaults
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Run tests
+          command: |
+            sudo pip install --upgrade pip
+            pip install --user tox
+            cd titanic_package
+            tox -e test
+            
+workflows:
+  version: 1
+  titanic:
+    jobs:
+      - test_classification_model
+      - deploy_app_container_in_heroku:
+          requires:
+            - section_07_test_app
+          filters:
+            branches:
+              only:
+                - master
